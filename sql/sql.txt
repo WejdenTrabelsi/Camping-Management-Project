@@ -1,0 +1,31 @@
+--database name : camping management--
+
+CREATE TABLE users (
+    id INT(11) PRIMARY KEY AUTO_INCREMENT,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    username VARCHAR(100) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    role ENUM('client', 'admin') NOT NULL,
+    status ENUM('pending', 'active', 'deactivated') DEFAULT 'pending',
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    is_active TINYINT(1) NOT NULL DEFAULT 0,
+    gender ENUM('male', 'female') NOT NULL,
+    age INT(11) CHECK (age >= 0) -- Ensuring no negative values
+);
+
+CREATE TABLE locations (
+    id INT(11) PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100) NOT NULL,
+    type ENUM('tent', 'caravan', 'chalet', 'rv') NOT NULL,
+    price DECIMAL(10,2) NOT NULL,
+    capacity INT(11) NOT NULL,
+    electricity TINYINT(1) DEFAULT 0,
+    water TINYINT(1) DEFAULT 0,
+    description TEXT DEFAULT NULL,
+    image_path VARCHAR(255) DEFAULT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    created_by INT(11) DEFAULT NULL,
+    FOREIGN KEY (created_by) REFERENCES users(id) ON DELETE SET NULL
+);
+
